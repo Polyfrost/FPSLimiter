@@ -20,8 +20,17 @@ pluginManagement {
     }
 
     plugins {
-        kotlin("jvm") version("2.0.20")
-        id("dev.deftu.gradle.multiversion-root") version("2.49.0")
+        kotlin("jvm") version("2.2.10")
+        id("dev.deftu.gradle.multiversion-root") version("2.50.0")
+    }
+}
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.2.10") // TODO remove once DGT in the build.gradle.kts is updated to 2.51.0
     }
 }
 
