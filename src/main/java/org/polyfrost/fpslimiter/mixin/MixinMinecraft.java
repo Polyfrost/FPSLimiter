@@ -10,13 +10,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft {
-    @ModifyConstant(method = "getLimitFramerate", constant = @Constant(intValue = 30))
-    private int setMainMenuLimit(int constant) {
-        return FPSLimiter.config.useMaxMainMenuFpsLimit ? FPSLimiter.config.maxMainMenuFpsLimit : 30;
+    // Also doesnt work
+    @Redirect(method = "getLimitFramerate", at = @At(value = "CONSTANT", args = "intValue=30"))
+    private int redirectIntValue(Integer original) {
+        return FPSLimiter.config.useMaxMainMenuFpsLimit ? FPSLimiter.config.maxMainMenuFpsLimit : original;
     }
 
     @Redirect(method = "getLimitFramerate", at = @At(value = "FIELD", target = "Lnet/minecraft/client/settings/GameSettings;limitFramerate:I"))
-    private int idk(GameSettings instance) {
+    private int setIngameLimit(GameSettings instance) {
         if (Display.isActive()) {
             if (FPSLimiter.config.useFpsLimit) {
                 return FPSLimiter.config.fpsLimit;
